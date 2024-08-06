@@ -13,3 +13,7 @@ export type TDefault = {
     is_success: boolean
     message: string
 }
+
+export type TryType = {
+    hello: string
+}
