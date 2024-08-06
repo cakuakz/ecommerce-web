@@ -1,3 +1,17 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "plugins": ["@typescript-eslint/eslint-plugin", "simple-import-sort", "prefer-arrow-functions"],
+  "rules": {
+    "prefer-const": "error",
+		"simple-import-sort/imports": "error",
+		"simple-import-sort/exports": "error",
+		"prefer-arrow-functions/prefer-arrow-functions": [
+			"error",
+			{
+				"disallowPrototype": true,
+				"singleReturnOnly": false,
+				"classPropertiesAllowed": false
+			}
+		]
+  }
 }
