@@ -3,6 +3,11 @@ const DICTIONARY = {
         LOGIN: {
             USERNAME: "USERNAME",
             PASSWORD: "PASSWORD"
+        },
+        REGISTER: {
+            USERNAME: "USERNAME",
+            PASSWORD: "PASSWORD",
+            FULLNAME: "FULLNAME"
         }
     },
     NAVBAR: {

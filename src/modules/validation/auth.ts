@@ -10,4 +10,13 @@ const LoginPayloadSchema = z.object({
     password: z.string().min(1, {message: requiredMessage})
 })
 
-export default LoginPayloadSchema
+const RegisterPayloadSchema = z.object({
+    username: z.string().min(1, {message: requiredMessage}),
+    password: z.string().min(1, {message: requiredMessage}),
+    fullname: z.string().min(1, {message: requiredMessage})
+})
+
+export { 
+    LoginPayloadSchema, 
+    RegisterPayloadSchema 
+}

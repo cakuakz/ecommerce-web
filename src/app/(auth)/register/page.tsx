@@ -1,60 +1,57 @@
 'use client'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from '@tanstack/react-query';
-import { Button, Input } from "antd";
+import { Button, Input, Typography } from "antd";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { capitalCase } from "text-case";
 
 import AuthFormLayout from "@/components/auth/authformlayout";
 import DICTIONARY from "@/modules/constant/language";
-import { LoginPayloadSchemaType } from "@/modules/payload/auth";
-import { login, SignInResponse } from "@/modules/services/auth";
-import { LoginPayloadSchema } from "@/modules/validation/auth";
+import { RegisterPayloadSchemaType } from "@/modules/payload/auth";
+import { RegisterPayloadSchema } from "@/modules/validation/auth";
 
-const Login = () => {
-    const [loading, setLoading] = useState(false);
-    const route = useRouter()
+const Register = () => {
 
     const { 
         handleSubmit,
         getValues,
         control,
         formState: { errors } 
-    } = useForm<LoginPayloadSchemaType>({
-        resolver: zodResolver(LoginPayloadSchema),
+    } = useForm<RegisterPayloadSchemaType>({
+        resolver: zodResolver(RegisterPayloadSchema),
         defaultValues: {
             username: '',
-            password: ''
+            password: '',
+            fullname: ''
         }
-    });
+    })
 
-    const mutation = useMutation<SignInResponse, Error, LoginPayloadSchemaType>({
-        mutationFn: login,
-        onSuccess: () => {
-            route.push("/menu")
-        },
-        onError: (error: Error) => {
-            console.error(error.message);
-        },
-        onSettled: () => {
-            setLoading(false);
-        },
-    });
-
-    const onSubmit = () => {
-        const payload: LoginPayloadSchemaType = {
+    const onSubmit = async () => {
+        const payload: RegisterPayloadSchemaType = {
             username: getValues('username'),
-            password: getValues('password')
-        };
-        setLoading(true);
-        mutation.mutate(payload);
+            password: getValues('password'),
+            fullname: getValues('fullname')
+        }
+        console.log(payload);
+        const response = await fetch('/api/auth/add-user', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+      
+          if (response.ok) {
+            window.location.href = '/login';
+          } else {
+            console.error('Failed to register');
+          }
     };
 
-    return (
+
+    const { Title } = Typography
+
+    return ( 
         <div className="flex flex-col w-screen h-screen items-center justify-center">
             <AuthFormLayout>
                 <Image 
@@ -63,6 +60,7 @@ const Login = () => {
                     width={250}
                     height={250}
                 />
+                <Title>Register</Title>
                 <div className="flex flex-col items-center mt-5 space-y-5">
                     <form 
                         onSubmit={handleSubmit(onSubmit)}
@@ -74,7 +72,7 @@ const Login = () => {
                             render={({ field }) => (
                                 <Input
                                    {...field}
-                                   placeholder={capitalCase(DICTIONARY.INPUTS.LOGIN.USERNAME)}
+                                   placeholder={capitalCase(DICTIONARY.INPUTS.REGISTER.USERNAME)}
                                    status={Boolean(errors.username?.message) ? "error" : ""}
                                 />
                             )}
@@ -85,22 +83,32 @@ const Login = () => {
                             render={({ field }) => (
                                 <Input
                                    {...field}
-                                   type="password"
-                                   placeholder={capitalCase(DICTIONARY.INPUTS.LOGIN.PASSWORD)}
+                                   placeholder={capitalCase(DICTIONARY.INPUTS.REGISTER.PASSWORD)}
                                    status={Boolean(errors.password?.message) ? "error" : ""}
                                 />
                             )}
                         />
-                        <Button htmlType="submit" type="primary" loading={loading}>Submit</Button>
+                        <Controller 
+                            name="fullname"
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                   {...field}
+                                   placeholder={capitalCase(DICTIONARY.INPUTS.REGISTER.FULLNAME)}
+                                   status={Boolean(errors.fullname?.message) ? "error" : ""}
+                                />
+                            )}
+                        />
+                        <Button
+                            htmlType="submit"
+                        >
+                            Register
+                        </Button>
                     </form>
-                    <div className="mt-4 flex flex-row space-x-2">
-                        <p className="text-base font-normal text-slate-400">Dont Have Account?</p>
-                        <Link href="/register">Register</Link>
-                    </div>
                 </div>
             </AuthFormLayout>
         </div>
-    );
-};
-
-export default Login;
+     );
+}
+ 
+export default Register;
