@@ -13,3 +13,9 @@ export type TDefault = {
     is_success: boolean
     message: string
 }
+
+export type TTable<T> = {
+    data: T[]
+    column: Array<keyof T>
+    classNames: string
+}

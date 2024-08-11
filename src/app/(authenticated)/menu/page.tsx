@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Col, Row, Typography } from 'antd';
+import { Button, Col, Row, Spin, Typography } from 'antd';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
@@ -9,33 +9,25 @@ const Menu = () => {
     const { data: session, status } = useSession();
 
     if (status === 'loading') {
-        return <p>Loading...</p>;
-    }
-
-    if (!session) {
-        return <p>Please log in.</p>;
+        return <Spin spinning/>;
     }
 
     return (
-        <>
-            <Row justify="center" align="middle">
-                <Col>
-                    <Image 
-                        src="/logo_ecommerce.svg"
-                        alt='logo pict'
-                        width={100}
-                        height={150}
-                        className=' mx-auto my-3'
-                    />
-                </Col>
-            </Row>
-            <Row justify="center" align="middle">
-                <Col>
-                    <Title level={3}>Welcome, {session.user?.name || 'User'}!</Title>
-                    <Paragraph>Your session is active.</Paragraph>
-                </Col>
-            </Row>
-        </>
+        session && (
+            <>
+                <Row justify="start" align="middle">
+                    <Col>
+                        <Title level={2}>Welcome, {session.user.name}!</Title>
+                        <Paragraph>Your session is active.</Paragraph>
+                    </Col>
+                </Row>
+                <Row justify="space-between" align="middle">
+                    <Col>
+                        
+                    </Col>
+                </Row>
+            </>
+        )
     );
 }
 

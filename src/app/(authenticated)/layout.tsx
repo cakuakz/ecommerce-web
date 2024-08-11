@@ -51,7 +51,6 @@ const MenuLayout: React.FC<TLayout> = ({ children }) => {
                         <Menu
                             theme="light"
                             mode="inline"
-                            defaultSelectedKeys={['1']}
                             items={MenuLayoutData}
                         />
                         <Menu 

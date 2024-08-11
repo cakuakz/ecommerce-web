@@ -8,7 +8,7 @@ export const GET = async (request: Request) => {
         const result = 
             await client.sql`
                 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-                CREATE IF NOT EXIST TABLE Users (
+                CREATE TABLE IF NOT EXISTS Users (
                     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                     username VARCHAR(50) NOT NULL,
                     password CHAR(60) NOT NULL,
