@@ -1,7 +1,7 @@
 'use client';
+import { PlusOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Row, Spin, Typography } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 
 import CustomTable from "@/components/menu/customtable";
 
