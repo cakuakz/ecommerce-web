@@ -91,7 +91,7 @@ const Login = () => {
                                 />
                             )}
                         />
-                        <Button htmlType="submit" type="primary" loading={loading}>Submit</Button>
+                        <Button htmlType="submit" type="primary" loading={loading}>{capitalCase(DICTIONARY.BUTTON.SUBMIT)}</Button>
                     </form>
                     <div className="mt-4 flex flex-row space-x-2">
                         <p className="text-base font-normal text-slate-400">Dont Have Account?</p>

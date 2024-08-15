@@ -1,22 +1,23 @@
+import { AddProductSchemaType } from "@/modules/payload/product"
 import { db } from "@vercel/postgres"
 import { NextResponse } from "next/server"
 
-import { AddProductPayload } from "@/modules/payload/product"
+
 
 export const POST = async (req: Request) => {
     try {
         const client = await db.connect()
 
-        const data: AddProductPayload = await req.json()
+        const data: AddProductSchemaType = await req.json()
         const existingProduct = await client.sql`SELECT * FROM products WHERE product_name = ${data.product_name}`
 
         if (existingProduct.rows.length > 0) {
-            return NextResponse.json({ message: "Product Already Exist" })
+            return NextResponse.json({ message: "Product Already Exist" }, { status: 400 })
         }
 
         await client.sql`
             INSERT INTO products (
-                product_name, 
+                product_name,
                 image_url,
                 status,
                 price,
@@ -30,7 +31,7 @@ export const POST = async (req: Request) => {
             );
         `
 
-        const product = await client.sql`SELECT * INTO products WHERE product_name = ${data.product_name}`
+        const product = await client.sql`SELECT * FROM products WHERE product_name = ${data.product_name}`
         return NextResponse.json({ product: product.rows[0] }, { status: 200 })
     } catch (error) {
         console.error(error)

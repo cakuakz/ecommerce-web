@@ -10,8 +10,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { SessionProvider, signOut, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { capitalCase } from 'text-case';
 
 import { MenuLayoutData } from '@/components/static';
+import DICTIONARY from '@/modules/constant/language';
 import { TLayout } from "@/modules/types";
 
 const MenuLayout: React.FC<TLayout> = ({ children }) => {
@@ -60,7 +62,7 @@ const MenuLayout: React.FC<TLayout> = ({ children }) => {
                                 {
                                     key: '1',
                                     icon: <LogoutOutlined />,
-                                    label: 'Logout',
+                                    label: capitalCase(DICTIONARY.SIDEBAR.LOGOUT),
                                     onClick: () => {
                                         signOut({ redirect: false }).then(() => {
                                             router.push("/login")

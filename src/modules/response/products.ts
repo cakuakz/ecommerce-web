@@ -8,3 +8,10 @@ export type ProductResponse = {
     created_at: string
     updated_at: string
 }
+
+export type AddProductResponse = {
+    error?: string | null;
+    status: number;
+    ok: boolean;
+    url?: string | null;
+}
