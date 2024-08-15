@@ -1,6 +1,7 @@
-import { ProductResponse } from "@/modules/response/products"
 import { db } from "@vercel/postgres"
 import { NextResponse } from "next/server"
+
+import { ProductResponse } from "@/modules/response/products"
 
 export const DELETE = async (req: Request) => {
     const client = await db.connect()

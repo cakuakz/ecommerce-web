@@ -1,9 +1,10 @@
 'use client';
 import { PlusOutlined } from "@ant-design/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Button, Col, Row, Spin, Typography } from "antd";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { capitalCase } from "text-case";
 
 import CustomModal from "@/components/menu/custommodal";
@@ -11,10 +12,9 @@ import CustomTable from "@/components/menu/customtable";
 import AddProductForm from "@/components/menu/product/addproductform";
 import DICTIONARY from "@/modules/constant/language";
 import { ProductResponse } from "@/modules/response/products";
-import { TTableColumn } from "@/modules/types";
-import { useFormLoading } from "@/modules/state/general";
 import { deleteProduct } from "@/modules/services/product";
-import toast from "react-hot-toast";
+import { useFormLoading } from "@/modules/state/general";
+import { TTableColumn } from "@/modules/types";
 
 const ProductPage = () => {
     const { Title, Paragraph } = Typography;

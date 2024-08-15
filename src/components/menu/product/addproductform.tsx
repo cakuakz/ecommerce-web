@@ -1,17 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { Col, Input, Select, Typography } from "antd";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { capitalCase } from "text-case";
 
 import { BreedOptions, StatusOptions } from "@/components/static";
 import DICTIONARY from "@/modules/constant/language";
 import { AddProductSchemaType } from "@/modules/payload/product";
-import { AddProductSchema } from "@/modules/validation/product";
-import { useMutation } from "@tanstack/react-query";
 import { AddProductResponse } from "@/modules/response/products";
 import { addProductApi } from "@/modules/services/product";
-import toast from "react-hot-toast";
 import { useFormLoading } from "@/modules/state/general";
+import { AddProductSchema } from "@/modules/validation/product";
 
 const AddProductForm = () => {
     const { Paragraph } = Typography

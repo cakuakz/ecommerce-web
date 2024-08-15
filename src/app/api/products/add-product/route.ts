@@ -1,8 +1,7 @@
-import { AddProductSchemaType } from "@/modules/payload/product"
 import { db } from "@vercel/postgres"
 import { NextResponse } from "next/server"
 
-
+import { AddProductSchemaType } from "@/modules/payload/product"
 
 export const POST = async (req: Request) => {
     try {
