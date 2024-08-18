@@ -2,6 +2,7 @@ import { db } from "@vercel/postgres"
 import { NextResponse } from "next/server"
 
 import { AddProductSchemaType } from "@/modules/payload/product"
+import { ProductAddResponse, ProductResponse } from "@/modules/response/products"
 
 export const POST = async (req: Request) => {
     try {
@@ -11,7 +12,10 @@ export const POST = async (req: Request) => {
         const existingProduct = await client.sql`SELECT * FROM products WHERE product_name = ${data.product_name}`
 
         if (existingProduct.rows.length > 0) {
-            return NextResponse.json({ message: "Product Already Exist" }, { status: 400 })
+            return NextResponse.json<ProductAddResponse>({
+                is_success: false,
+                message: "Product Already Exist" 
+            }, { status: 400 })
         }
 
         await client.sql`
@@ -31,9 +35,17 @@ export const POST = async (req: Request) => {
         `
 
         const product = await client.sql`SELECT * FROM products WHERE product_name = ${data.product_name}`
-        return NextResponse.json({ product: product.rows[0] }, { status: 200 })
+        return NextResponse.json<ProductAddResponse>({
+            is_success: true,
+            message: "Product Successfully Added!",
+            product: product.rows[0] as ProductResponse
+        }, { status: 200 })
     } catch (error) {
         console.error(error)
-        return NextResponse.json({ error: error}, { status: 500 })
+        return NextResponse.json<ProductAddResponse>({
+            is_success: false,
+            message: "Failed to Add Product",
+            error: (error as Error).message
+        }, { status: 500 })
     }
 }

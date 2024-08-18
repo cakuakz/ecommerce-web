@@ -2,11 +2,12 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Col, Row, Spin, Typography } from "antd";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { capitalCase } from "text-case";
 
+import CustomAlertModal from "@/components/menu/customalertmodal";
 import CustomModal from "@/components/menu/custommodal";
 import CustomTable from "@/components/menu/customtable";
 import AddProductForm from "@/components/menu/product/addproductform";
@@ -21,6 +22,7 @@ const ProductPage = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const IsFormLoading = useFormLoading((state) => state.isFormLoading)
     const pathname = usePathname()
+    const router = useRouter()
     
     const { isLoading, error, data } = useQuery({
         queryKey: ['getProducts'],
@@ -32,7 +34,7 @@ const ProductPage = () => {
 
     if (isLoading) return <Spin spinning />;
 
-    if (error) return <div>ini error bang</div>;
+    if (error) return <div>Error Loading Page...</div>;
 
     const products = data?.products || [];
 
@@ -72,9 +74,17 @@ const ProductPage = () => {
     }
 
     const handleDeleteProduct = (record: ProductResponse) => {
-        deleteProduct(record.id)
-        .then((res) => {
-            toast.success(res.message)
+        CustomAlertModal({
+            modalTitle: "Do you want to delete this item?",
+            onSubmit: async () => {
+                try {
+                    await deleteProduct(record.id)
+                    router.refresh()
+                } catch (error) {
+                    toast.error("Failed to delete product")
+                }
+            },
+            children: <Paragraph>This item will be deleted permanently</Paragraph>
         })
     }
 

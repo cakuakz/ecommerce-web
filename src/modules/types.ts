@@ -33,7 +33,7 @@ export type TTableColumn<T> = {
 }
 
 export type TModal = {
-    isOpen: boolean
+    isOpen?: boolean
     modalTitle: string
     onSubmit?: () => void
     onCancel?: () => void

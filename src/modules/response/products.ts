@@ -1,3 +1,5 @@
+import { TDefault } from "../types"
+
 export type ProductResponse = {
     id: string
     product_name: string
@@ -9,9 +11,11 @@ export type ProductResponse = {
     updated_at: string
 }
 
-export type AddProductResponse = {
-    error?: string | null;
-    status: number;
-    ok: boolean;
-    url?: string | null;
+export type ProductAddResponse = TDefault & {
+    product?: ProductResponse
+    error?: string
+}
+
+export type GetProductResponse = TDefault & {
+    products?: ProductResponse[]
 }

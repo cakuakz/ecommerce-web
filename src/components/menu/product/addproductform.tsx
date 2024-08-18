@@ -8,7 +8,7 @@ import { capitalCase } from "text-case";
 import { BreedOptions, StatusOptions } from "@/components/static";
 import DICTIONARY from "@/modules/constant/language";
 import { AddProductSchemaType } from "@/modules/payload/product";
-import { AddProductResponse } from "@/modules/response/products";
+import { ProductAddResponse } from "@/modules/response/products";
 import { addProductApi } from "@/modules/services/product";
 import { useFormLoading } from "@/modules/state/general";
 import { AddProductSchema } from "@/modules/validation/product";
@@ -34,10 +34,10 @@ const AddProductForm = () => {
         }
     })
 
-    const mutation = useMutation<AddProductResponse, Error, AddProductSchemaType>({
+    const mutation = useMutation<ProductAddResponse, Error, AddProductSchemaType>({
         mutationFn: addProductApi,
-        onSuccess: () => {
-            toast.success("Product successfully added!")
+        onSuccess: (data) => {
+            toast.success(data.message)
         },
         onError: (error: Error) => {
             console.error(error.message)
