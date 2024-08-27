@@ -1,6 +1,8 @@
-import { Button, Space, Table } from "antd";
+import { Button, Space, Table, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { capitalCase } from "text-case";
 
+import useWindowWidth from "@/modules/hooks/usewidthchecker";
 import { TTable } from "@/modules/types";
 
 const CustomTable = <T extends object>({ 
@@ -16,6 +18,8 @@ const CustomTable = <T extends object>({
             currency: "IDR"
           }).format(number)
     }
+
+    const windowWidth = useWindowWidth()
 
     const tableColumns: ColumnsType<T> = columns.map((col) => {
 
@@ -38,10 +42,28 @@ const CustomTable = <T extends object>({
             }
         }
 
+        if (col.column === 'sales_status') {
+            return {
+                title: 'Sales Status',
+                dataIndex: col.column as string,
+                key: String(col),
+                render: (value: string) => (
+                    <Tag
+                        color={`${value === "available" ? "green" : "red"} `}
+                    >
+                        {capitalCase(value)}
+                    </Tag>
+                )
+            }
+        }
+
         return {
             title: col.label,
             dataIndex: col.column as string,
             key: String(col),
+            render: (value) => (
+                capitalCase(value)
+            )
         }
     })
 
@@ -66,6 +88,7 @@ const CustomTable = <T extends object>({
             columns={tableColumns}
             rowKey={(record) => (record as any).id}
             className={classNames}
+            scroll={windowWidth < 1024 ? { x: 1300 } : { x: 0 }}
         />
     );
 };

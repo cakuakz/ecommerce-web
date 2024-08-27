@@ -7,7 +7,8 @@ export const GET = async (request: Request) => {
     try {
         const result = await client.sql`
             CREATE TYPE status AS ENUM ('healthy', 'disabled');
-
+            CREATE TYPE sales_status AS ENUM ('available', 'sold');
+            CREATE TYPE gender AS ENUM ('male', 'female');
             CREATE TYPE breed AS ENUM (
                 'british shorthair',
                 'american shorthair',
@@ -28,6 +29,8 @@ export const GET = async (request: Request) => {
                 product_name VARCHAR(50) NOT NULL,
                 image_url TEXT NOT NULL,
                 status status NOT NULL,
+                sales_status sales_status NOT NULL,
+                gender gender NOT NULL,
                 price NUMERIC(10, 2) NOT NULL,
                 breed breed NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

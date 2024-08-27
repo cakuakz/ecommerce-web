@@ -14,6 +14,9 @@ const DICTIONARY = {
         DASHBOARD: "DASHBOARD",
         PRODUCTS: "PRODUCTS",
         USER: "USER",
+        USER_PROFILE: "PROFILE",
+        USER_CHANGE_PASS: "CHANGE PASSWORD",
+        USER_PRESENCE: "PRESENCE",
         LOGOUT: "LOGOUT",
     },
     VALIDATION: {
@@ -36,12 +39,36 @@ const DICTIONARY = {
                 IMAGE_URL: "IMAGE URL",
                 STATUS: "STATUS",
                 PRICE: "PRICE",
-                BREED: "BREED"
+                BREED: "BREED",
+                SALES_STATUS: "SALES STATUS",
+                GENDER: "GENDER"
             },
             PET_STATUS: {
                 HEALTHY: "HEALTHY",
                 DISABLED: "DISABLED"
             },
+            PET_SALES: {
+                AVAILABLE: "AVAILABLE",
+                SOLD: "SOLD"
+            },
+            PET_GENDER: {
+                MALE: "MALE",
+                FEMALE: "FEMALE"
+            }
+        },
+        USER_MANAGEMENT: {
+            PROFILE: {
+                TITLE: "PROFILE",
+                SUBTITLE: "USER PROFILE PAGE"
+            },
+            CHANGE_PASS: {
+                TITLE: "CHANGE PASSWORD",
+                SUBTITLE: "USER CHANGE PASSWORD PAGE"
+            },
+            PRESENCE: {
+                TITLE: "PRESENCE",
+                SUBTITLE: "USER PRESENCE PAGE"
+            }
         }
     },
     PET_BREED: {
@@ -55,6 +82,10 @@ const DICTIONARY = {
         OREN: "OREN",
         EGYPTIAN_MAU: "EGYPTIAN MAU",
         PERSIAN_CAT: "PERSIAN CAT"
+    },
+    WARNING: {
+        DELETE: "ARE YOU SURE YOU WANT TO DELETE THIS?",
+        DELETE_SUBTITLE: "THIS DATA WILL BE DELETED PERMANENTLY"
     }
 }
 

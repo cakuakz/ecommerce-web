@@ -24,7 +24,8 @@ export const POST = async (req: Request) => {
                 image_url,
                 status,
                 price,
-                breed
+                breed,
+                
             ) VALUES (
                 ${data.product_name},
                 ${data.image_url},

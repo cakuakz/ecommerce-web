@@ -10,7 +10,9 @@ const AddProductSchema = z.object({
     status: z.string().min(1, { message: requiredMessage }),
     image_url: z.string().min(1, { message: requiredMessage }),
     price: z.number().min(0, { message: requiredMessage }),
-    breed: z.string().min(1, { message: requiredMessage })
+    breed: z.string().min(1, { message: requiredMessage }),
+    sales_status: z.string().min(1, { message: requiredMessage }),
+    gender: z.string().min(1, { message: requiredMessage })
 })
 
 export {

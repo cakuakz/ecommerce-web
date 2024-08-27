@@ -1,4 +1,4 @@
-import { db, sql } from '@vercel/postgres';
+import { db } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
 export const GET = async (request: Request) => {
@@ -13,6 +13,7 @@ export const GET = async (request: Request) => {
                     username VARCHAR(50) NOT NULL,
                     password CHAR(60) NOT NULL,
                     fullname VARCHAR(50) NOT NULL,
+                    img_url TEXT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );

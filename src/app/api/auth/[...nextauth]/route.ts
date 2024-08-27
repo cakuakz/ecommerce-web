@@ -1,8 +1,10 @@
 import { db } from '@vercel/postgres';
 import { compare } from 'bcryptjs';
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { z } from 'zod';
+
+import { useGetUserProperty } from '@/modules/state/general';
 
 const getUser = async (username: string) => {
   const client = await db.connect()
@@ -15,7 +17,7 @@ const getUser = async (username: string) => {
   }
 };
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -84,6 +86,8 @@ const handler = NextAuth({
   },
   
   secret: process.env.NEXTAUTH_SECRET,
-});
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST}

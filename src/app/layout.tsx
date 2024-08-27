@@ -2,6 +2,7 @@ import "./globals.css";
 
 import { ConfigProvider } from "antd";
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
 
 import { Providers } from "./Provider";
 
@@ -26,6 +27,9 @@ export default function RootLayout({
     >
       <html lang="en">
         <body>
+          <Toaster 
+            position="top-right"
+          />
           <Providers>
             {children}
           </Providers>

@@ -1,5 +1,5 @@
 'use client';
-import { PlusOutlined } from "@ant-design/icons";
+import { DownloadOutlined,PlusOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Col, Row, Spin, Typography } from "antd";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,6 +13,7 @@ import CustomTable from "@/components/menu/customtable";
 import AddProductForm from "@/components/menu/product/addproductform";
 import DICTIONARY from "@/modules/constant/language";
 import { ProductResponse } from "@/modules/response/products";
+import { generateCsvUrl } from "@/modules/services/downloadcsv";
 import { deleteProduct } from "@/modules/services/product";
 import { useFormLoading } from "@/modules/state/general";
 import { TTableColumn } from "@/modules/types";
@@ -58,6 +59,14 @@ const ProductPage = () => {
         {
             label: 'Breed',
             column: 'breed'
+        },
+        {
+            label: 'Gender',
+            column: 'gender'
+        },
+        {
+            label: 'Sales Status',
+            column: 'sales_status'
         }
     ]
 
@@ -75,17 +84,30 @@ const ProductPage = () => {
 
     const handleDeleteProduct = (record: ProductResponse) => {
         CustomAlertModal({
-            modalTitle: "Do you want to delete this item?",
+            modalTitle: capitalCase(DICTIONARY.WARNING.DELETE),
             onSubmit: async () => {
                 try {
-                    await deleteProduct(record.id)
-                    router.refresh()
+                    const response = await deleteProduct(record.id)
+                    toast.success(response.message)
                 } catch (error) {
                     toast.error("Failed to delete product")
                 }
             },
-            children: <Paragraph>This item will be deleted permanently</Paragraph>
+            children: <Paragraph>{capitalCase(DICTIONARY.WARNING.DELETE_SUBTITLE)}</Paragraph>
         })
+    }
+
+    const handleDownload = async () => {
+        try {
+            const url = await generateCsvUrl()
+            const a = document.createElement('a')
+            a.href = url;
+            a.download = 'products.csv'
+            a.click();
+            URL.revokeObjectURL(url)
+        } catch (error) {
+            console.error('Failed to download CSV:', error);
+        }
     }
 
     return (
@@ -105,13 +127,23 @@ const ProductPage = () => {
                     <Title>{capitalCase(DICTIONARY.MENU.PRODUCTS.TITLE)}</Title>
                     <Paragraph>{capitalCase(DICTIONARY.MENU.PRODUCTS.SUBTITLE)}</Paragraph>
                 </Col>
-                <Button 
-                    type="default" 
-                    onClick={handleModalOpen} 
-                    icon={<PlusOutlined />}
-                >
-                    {capitalCase(DICTIONARY.BUTTON.ADD_PETS)}
-                </Button>
+                <Col>
+                    <Button
+                        type="default"
+                        onClick={handleDownload}
+                        icon={<DownloadOutlined />}
+                        className="!bg-slate-100 mr-4"
+                    >
+                        Download CSV
+                    </Button>
+                    <Button 
+                        type="default" 
+                        onClick={handleModalOpen} 
+                        icon={<PlusOutlined />}
+                    >
+                        {capitalCase(DICTIONARY.BUTTON.ADD_PETS)}
+                    </Button>
+                </Col>
             </Row>
             {products.length > 0 && (
                 <CustomTable

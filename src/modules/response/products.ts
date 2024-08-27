@@ -6,6 +6,8 @@ export type ProductResponse = {
     image_url: string
     status: string
     price: number
+    sales_status: string
+    gender: string
     breed: string
     created_at: string
     updated_at: string

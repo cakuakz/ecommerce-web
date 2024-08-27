@@ -1,6 +1,7 @@
 'use client'
+import { UploadOutlined } from '@ant-design/icons';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, Typography } from "antd";
+import { Button, Input, message, Typography, Upload, UploadProps } from "antd";
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
 import { capitalCase } from "text-case";
@@ -13,6 +14,7 @@ import { RegisterPayloadSchema } from "@/modules/validation/auth";
 const Register = () => {
 
     const { 
+        register,
         handleSubmit,
         getValues,
         control,
@@ -27,18 +29,17 @@ const Register = () => {
     })
 
     const onSubmit = async () => {
-        const payload: RegisterPayloadSchemaType = {
-            username: getValues('username'),
-            password: getValues('password'),
-            fullname: getValues('fullname')
-        }
-        console.log(payload);
+        const formData = new FormData()
+
+        formData.append("username", getValues("username"));
+        formData.append("password", getValues("password"));
+        formData.append("fullname", getValues("fullname"));
+        formData.append("img_url", getValues("img_url")[0]);
+
+        console.log(formData);
         const response = await fetch('/api/auth/add-user', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
+            body: formData
           });
       
           if (response.ok) {
@@ -66,6 +67,7 @@ const Register = () => {
                         onSubmit={handleSubmit(onSubmit)}
                         className="space-y-5"
                     >
+                        <input type='file' {...register("img_url")}/>
                         <Controller 
                             name="username"
                             control={control}

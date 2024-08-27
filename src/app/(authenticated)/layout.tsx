@@ -14,24 +14,63 @@ import { capitalCase } from 'text-case';
 
 import { MenuLayoutData } from '@/components/static';
 import DICTIONARY from '@/modules/constant/language';
+import useWindowWidth from '@/modules/hooks/usewidthchecker';
+import { useGetUserProperty } from '@/modules/state/general';
 import { TLayout } from "@/modules/types";
 
 const MenuLayout: React.FC<TLayout> = ({ children }) => {
     const { data: session, status } = useSession()
     const router = useRouter()
     const [collapsed, setCollapsed] = useState(false)
+    const setUsername = useGetUserProperty((state) => state.setUsername)
+    const setFullname = useGetUserProperty((state) => state.setFullname)
+    const setImageUrl = useGetUserProperty((state) => state.setImageUrl)
+    const windowWidth = useWindowWidth()
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken()
 
-    useEffect(() => {
-        if (status === 'loading') return
-        if (!session) router.push('/login')
-      }, [session, status, router])
+    const getUserProperty = async (username: string) => {
+        const response = await fetch("/api/auth/get-user-property", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username })
+        })
+        const data = await response.json()
     
-      if (status === 'loading') {
+        if (response.ok) {
+          setUsername(data.username)
+          setFullname(data.fullname)
+          setImageUrl(data.img_url)
+          console.log("Berhasil")
+        } else {
+          console.error('Failed to fetch user property:', data.error)
+        }
+    }
+
+    useEffect(() => {
+        if (status === 'unauthenticated') {
+            router.push('/login')
+        }
+    }, [status, router])
+
+    useEffect(() => {
+        if (windowWidth < 1024) {
+            setCollapsed(true)
+        } else {
+            setCollapsed(false)
+        }
+    }, [windowWidth])
+
+    if (status === 'loading') {
         return <p>Loading...</p>
-      }
+    } 
+
+    if (session) {
+        getUserProperty(session.user.name)
+    }
 
     return (
         <SessionProvider>
@@ -41,6 +80,7 @@ const MenuLayout: React.FC<TLayout> = ({ children }) => {
                     collapsible 
                     collapsed={collapsed} 
                     style={{ background: colorBgContainer }}
+                    className={`${windowWidth < 1024 && collapsed ? 'hidden' : 'z-50'}`}
                 >
                     <Image 
                         src="/logo_ecommerce.svg"
@@ -80,9 +120,9 @@ const MenuLayout: React.FC<TLayout> = ({ children }) => {
                             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                             onClick={() => setCollapsed(!collapsed)}
                             style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
+                                fontSize: '16px',
+                                width: 64,
+                                height: 64,
                             }}
                         />
                     </Header>

@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { capitalCase } from "text-case";
 
-import { BreedOptions, StatusOptions } from "@/components/static";
+import { BreedOptions, labelInputClassname, PetGenderOptions, StatusOptions } from "@/components/static";
 import DICTIONARY from "@/modules/constant/language";
 import { AddProductSchemaType } from "@/modules/payload/product";
 import { ProductAddResponse } from "@/modules/response/products";
@@ -30,7 +30,9 @@ const AddProductForm = () => {
             image_url: '',
             status: '',
             price: 0,
-            breed: ''
+            breed: '',
+            gender: '',
+            sales_status: ''
         }
     })
 
@@ -54,7 +56,9 @@ const AddProductForm = () => {
             image_url: getValues("image_url"),
             status: getValues("status"),
             price: Number(getValues("price")),
-            breed: getValues("breed")
+            breed: getValues("breed"),
+            gender: getValues("gender"),
+            sales_status: "available"
         }
         setIsFormLoading(true)
         mutation.mutate(payload)
@@ -70,7 +74,7 @@ const AddProductForm = () => {
                 className="items-center !space-y-8"
             >
                 <Col>
-                    <Paragraph>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PRODUCT_NAME)}</Paragraph>
+                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PRODUCT_NAME)}</Paragraph>
                     <Controller 
                         name="product_name"
                         control={control}
@@ -84,7 +88,7 @@ const AddProductForm = () => {
                     />
                 </Col>
                 <Col>
-                    <Paragraph>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.IMAGE_URL)}</Paragraph>
+                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.IMAGE_URL)}</Paragraph>
                     <Controller 
                         name="image_url"
                         control={control}
@@ -98,7 +102,7 @@ const AddProductForm = () => {
                     />
                 </Col>
                 <Col>
-                    <Paragraph>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.STATUS)}</Paragraph>
+                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.STATUS)}</Paragraph>
                     <Controller 
                         name="status"
                         control={control}
@@ -119,7 +123,28 @@ const AddProductForm = () => {
                     />
                 </Col>
                 <Col>
-                    <Paragraph>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PRICE)}</Paragraph>
+                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.GENDER)}</Paragraph>
+                    <Controller 
+                        name="gender"
+                        control={control}
+                        render={({ field }) => (
+                            <Select 
+                                {...field}
+                                allowClear
+                                placeholder={capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.GENDER)}
+                                onChange={(value: string) => {
+                                    setValue("gender", value)
+                                    console.log(value)
+                                }}
+                                style={{ width: 200 }}
+                                status={Boolean(errors.gender?.message) ? "error" : ""}
+                                options={PetGenderOptions}
+                            />
+                        )}
+                    />
+                </Col>
+                <Col>
+                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PRICE)}</Paragraph>
                     <Controller 
                         name="price"
                         control={control}
@@ -135,9 +160,8 @@ const AddProductForm = () => {
                         )}
                     />
                 </Col>
-                <p>{errors.price?.message}</p>
                 <Col>
-                    <Paragraph>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.BREED)}</Paragraph>
+                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.BREED)}</Paragraph>
                     <Controller 
                         name="breed"
                         control={control}
@@ -156,7 +180,6 @@ const AddProductForm = () => {
                             />
                         )}
                     />
-                    <p>{errors.breed?.message}</p>
                 </Col>
             </Col>
         </form>
