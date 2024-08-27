@@ -1,5 +1,4 @@
 import { db } from "@vercel/postgres";
-import { message } from "antd";
 import { NextResponse } from "next/server";
 
 type Attendance = {

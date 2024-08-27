@@ -1,6 +1,7 @@
 'use client';
 
 import * as faceapi from 'face-api.js';
+import dynamic from 'next/dynamic';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from "react";
 import toast from 'react-hot-toast';
@@ -55,6 +56,7 @@ const ProfilePresence = () => {
     }, [img_url, modalShown])
 
     const loadModels = async () => {
+      const faceapi = await import('face-api.js');
       const MODEL_URL = '/models'
 
       await Promise.all([
@@ -66,6 +68,7 @@ const ProfilePresence = () => {
       ])
 
       setModelsLoaded(true)
+      return faceapi;
     }
 
     const startVideo = () => {
