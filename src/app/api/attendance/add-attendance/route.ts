@@ -1,10 +1,9 @@
+import { meshgrid } from "@tensorflow/tfjs";
 import { db } from "@vercel/postgres";
+import { message } from "antd";
 import { NextResponse } from "next/server";
 
-type Attendance = {
-    userId: string;
-    isAttended: boolean;
-};
+import { CheckAttendanceType } from "@/modules/payload/user";
 
 export const POST = async (req: Request) => {
     const client = await db.connect();
@@ -13,12 +12,12 @@ export const POST = async (req: Request) => {
     const time = currentDate.toLocaleTimeString();
 
     try {
-        const data: Attendance = await req.json();
+        const data: CheckAttendanceType = await req.json();
 
         if (data.isAttended) {
             const existingAttendance = await client.sql`
                 SELECT * FROM attendance
-                WHERE user_id = ${data.userId}
+                WHERE user_id = ${data.user_id}
                 AND attendance_date = ${date}
             `;
 
@@ -34,11 +33,27 @@ export const POST = async (req: Request) => {
             const lateEndTime = 17 * 60;
 
             if (checkInTime >= presentStartTime && checkInTime <= presentEndTime) {
-                attendanceStatus = 'present';
+                attendanceStatus = 'present'
             } else if (checkInTime > presentEndTime && checkInTime <= lateEndTime) {
-                attendanceStatus = 'late';
+                attendanceStatus = 'late'
             } else {
-                attendanceStatus = 'absent';
+                attendanceStatus = 'absent'
+                await client.sql`
+                    INSERT INTO attendance (
+                        user_id,
+                        attendance_date,
+                        check_in_time,
+                        check_out_time,
+                        attendance_status
+                    ) VALUES (
+                        ${data.user_id},
+                        ${date},
+                        ${time},
+                        ${time},
+                        ${attendanceStatus}
+                    )
+                `
+                return NextResponse.json({ message: `Attendance Status has been changed: ${attendanceStatus}` }, { status: 200 })
             }
 
             await client.sql`
@@ -48,13 +63,13 @@ export const POST = async (req: Request) => {
                     check_in_time,
                     attendance_status
                 ) VALUES (
-                    ${data.userId},
+                    ${data.user_id},
                     ${date},
                     ${time},
                     ${attendanceStatus}
                 )
             `;
-            return NextResponse.json({ message: "Attendance Status has been changed" }, { status: 200 })
+            return NextResponse.json({ message: `Attendance Status has been changed: ${attendanceStatus}` }, { status: 200 })
         }
     } catch (error) {
         console.error("Error inserting attendance:", error);

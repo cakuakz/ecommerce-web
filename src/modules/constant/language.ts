@@ -58,7 +58,7 @@ const DICTIONARY = {
         },
         USER_MANAGEMENT: {
             PROFILE: {
-                TITLE: "PROFILE",
+                TITLE: "DETAIL PROFILE",
                 SUBTITLE: "USER PROFILE PAGE"
             },
             CHANGE_PASS: {

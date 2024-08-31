@@ -3,7 +3,7 @@ import {
     LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined  } from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from "antd";
+import { Button, Drawer, Layout, Menu, theme } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import Image from 'next/image';
@@ -22,6 +22,7 @@ const MenuLayout: React.FC<TLayout> = ({ children }) => {
     const { data: session, status } = useSession()
     const router = useRouter()
     const [collapsed, setCollapsed] = useState(false)
+    const [openDrawer, setOpenDrawer] = useState(false)
     const setUsername = useGetUserProperty((state) => state.setUsername)
     const setFullname = useGetUserProperty((state) => state.setFullname)
     const setImageUrl = useGetUserProperty((state) => state.setImageUrl)
@@ -50,6 +51,34 @@ const MenuLayout: React.FC<TLayout> = ({ children }) => {
         }
     }
 
+    const MenuBar = () => {
+        return (
+            <div className='flex flex-col justify-between'>
+                <Menu
+                    theme="light"
+                    mode="inline"
+                    items={MenuLayoutData}
+                />
+                    <Menu 
+                        theme="light"
+                        mode="inline"
+                        items={[
+                            {
+                                key: '1',
+                                icon: <LogoutOutlined />,
+                                label: capitalCase(DICTIONARY.SIDEBAR.LOGOUT),
+                                onClick: () => {
+                                    signOut({ redirect: false }).then(() => {
+                                        router.push("/login")
+                                    });
+                                }
+                            }
+                        ]}
+                    />
+            </div>
+        )
+    }
+
     useEffect(() => {
         if (status === 'unauthenticated') {
             router.push('/login')
@@ -75,6 +104,21 @@ const MenuLayout: React.FC<TLayout> = ({ children }) => {
     return (
         <SessionProvider>
             <Layout>
+                <Drawer
+                    placement='left'
+                    open={openDrawer}
+                    onClose={() => setOpenDrawer(false)}
+                    className={`${windowWidth < 1024 && collapsed ? '' : 'hidden'}`}
+                >
+                    <Image 
+                        src="/logo_ecommerce.svg"
+                        alt='logo pict'
+                        width={100}
+                        height={150}
+                        className=' mx-auto my-3'
+                    />
+                    <MenuBar />
+                </Drawer>
                 <Sider 
                     trigger={null} 
                     collapsible 
@@ -89,42 +133,33 @@ const MenuLayout: React.FC<TLayout> = ({ children }) => {
                         height={150}
                         className=' mx-auto my-3'
                     />
-                    <div className='flex flex-col justify-between'>
-                        <Menu
-                            theme="light"
-                            mode="inline"
-                            items={MenuLayoutData}
-                        />
-                        <Menu 
-                            theme="light"
-                            mode="inline"
-                            items={[
-                                {
-                                    key: '1',
-                                    icon: <LogoutOutlined />,
-                                    label: capitalCase(DICTIONARY.SIDEBAR.LOGOUT),
-                                    onClick: () => {
-                                        signOut({ redirect: false }).then(() => {
-                                            router.push("/login")
-                                        });
-                                    }
-                                }
-                            ]}
-                        />
-                    </div>
+                    <MenuBar />
                 </Sider>
                 <Layout>
                     <Header style={{ padding: 0, background: colorBgContainer }}>
-                        <Button
-                            type="text"
-                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                            onClick={() => setCollapsed(!collapsed)}
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 64,
-                            }}
-                        />
+                        {windowWidth < 1024 ? (
+                            <Button
+                                type="text"
+                                icon={<MenuUnfoldOutlined />}
+                                onClick={() => setOpenDrawer(true)}
+                                style={{
+                                    fontSize: '16px',
+                                    width: 64,
+                                    height: 64,
+                                }}
+                            />
+                        ) : (
+                            <Button
+                                type="text"
+                                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                                onClick={() => setCollapsed(!collapsed)}
+                                style={{
+                                    fontSize: '16px',
+                                    width: 64,
+                                    height: 64,
+                                }}
+                            />
+                        )}
                     </Header>
 
                     <Content

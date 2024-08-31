@@ -124,7 +124,7 @@ const ProfilePresence = () => {
     const postMatchDetected = async () => {
       const payload = {
         isAttended: true,
-        userId: session.user.id
+        user_id: session.user.id
       }
       try {
           const response = await fetch('/api/attendance/add-attendance', {
@@ -135,7 +135,10 @@ const ProfilePresence = () => {
               body: JSON.stringify(payload),
           });
           const data = await response.json()
-            .then((res) => toast.success(res.message))
+            .then((res) => {
+              toast.success(res.message)
+              closeWebcam()
+            })
             .catch((error) => toast.error(error))
           console.log('Attendance response:', data);
       } catch (error) {
