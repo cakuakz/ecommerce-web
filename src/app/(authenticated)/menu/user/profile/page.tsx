@@ -5,7 +5,6 @@ import { Avatar, Card, Col, Divider, Input, Row, Tabs, Typography } from "antd";
 import Image from 'next/image';
 import { capitalCase } from "text-case";
 
-import ProfilePresence from '@/components/user/profilepresence';
 import DICTIONARY from "@/modules/constant/language";
 import { useGetUserProperty } from "@/modules/state/general";
 

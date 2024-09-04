@@ -10,7 +10,8 @@ const CustomTable = <T extends object>({
     columns, 
     classNames,
     onEdit,
-    onDelete
+    onDelete,
+    nullValueReplace
 }: TTable<T>) => {
     const convertCurrency = (number: number) => {
         return new Intl.NumberFormat("id-ID", {
@@ -62,7 +63,7 @@ const CustomTable = <T extends object>({
             dataIndex: col.column as string,
             key: String(col),
             render: (value) => (
-                capitalCase(value)
+                value == null ? capitalCase(nullValueReplace) : capitalCase(value)
             )
         }
     })

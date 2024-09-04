@@ -20,16 +20,17 @@ export type TDropdown = {
 }
 
 export type TTable<T> = {
-    data: T[];
-    columns: TTableColumn<T>[];
-    classNames?: string;
+    data: T[]
+    columns: TTableColumn<T>[]
+    classNames?: string
+    nullValueReplace: string
     onEdit?: (record: T) => void
     onDelete?: (record: T) => void
 }
 
 export type TTableColumn<T> = {
-    label: string;
-    column: keyof T;
+    label: string
+    column: keyof T
 }
 
 export type TModal = {

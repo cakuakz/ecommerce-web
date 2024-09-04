@@ -51,7 +51,7 @@ export const MenuLayoutData: MenuItem[] = [
             {
                 key: '3-3',
                 label: (
-                    <Link href="/">{capitalCase(DICTIONARY.SIDEBAR.USER_PRESENCE)}</Link>
+                    <Link href="/menu/user/presence">{capitalCase(DICTIONARY.SIDEBAR.USER_PRESENCE)}</Link>
                 )
             }
         ]

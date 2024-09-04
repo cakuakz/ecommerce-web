@@ -1,7 +1,7 @@
 'use client';
 
+import { Button } from 'antd';
 import * as faceapi from 'face-api.js';
-import dynamic from 'next/dynamic';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from "react";
 import toast from 'react-hot-toast';
@@ -157,13 +157,13 @@ const ProfilePresence = () => {
       <div style={{ textAlign: 'center', padding: '10px' }}>
         {
           captureVideo && modelsLoaded ?
-            <button onClick={closeWebcam} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
+            <Button size='large' block onClick={closeWebcam} className='bg-blue-500 hover:bg-blue-400 text-white font-bold border-b-4 border-blue-700 hover:border-blue-500 rounded'>
               Close Webcam
-            </button>
+            </Button>
             :
-            <button onClick={startVideo} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
+            <Button size='large' block onClick={startVideo} className='bg-blue-500 hover:bg-blue-400 text-white font-bold border-b-4 border-blue-700 hover:border-blue-500 rounded'>
               Open Webcam
-            </button>
+            </Button>
         }
       </div>
       {

@@ -151,6 +151,7 @@ const ProductPage = () => {
                     columns={columns}
                     classNames="rounded-sm drop-shadow-md mt-3"
                     onDelete={handleDeleteProduct}
+                    nullValueReplace=""
                 />
             )}
         </>
