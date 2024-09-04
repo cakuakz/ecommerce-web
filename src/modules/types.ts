@@ -24,6 +24,7 @@ export type TTable<T> = {
     columns: TTableColumn<T>[]
     classNames?: string
     nullValueReplace: string
+    isActionColumn?: boolean
     onEdit?: (record: T) => void
     onDelete?: (record: T) => void
 }

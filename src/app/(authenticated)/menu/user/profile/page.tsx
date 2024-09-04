@@ -1,17 +1,15 @@
 'use client'
 
-import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Card, Col, Divider, Input, Row, Tabs, Typography } from "antd";
+import { Avatar, Card, Row, Typography } from "antd";
 import Image from 'next/image';
 import { capitalCase } from "text-case";
 
+import UserProfileForm from '@/components/user/userprofileform';
 import DICTIONARY from "@/modules/constant/language";
 import { useGetUserProperty } from "@/modules/state/general";
 
 const UserProfile = () => {
-    const { Title, Paragraph } = Typography
-    const username = useGetUserProperty((state) => state.username)
-    const fullname = useGetUserProperty((state) => state.fullname)
+    const { Title } = Typography
     const img_url = useGetUserProperty((state) => state.img_url)
 
     return (
@@ -40,6 +38,7 @@ const UserProfile = () => {
                         <Title level={2}>{capitalCase(DICTIONARY.MENU.USER_MANAGEMENT.PROFILE.TITLE)}</Title>
                     </div>
                 </Card>
+                <UserProfileForm />
             </Row>
         </>
      );

@@ -8,7 +8,7 @@ export const POST = async (req: Request) => {
 
     try {
         const data = await req.json()
-        const user_attendance = await client.sql`SELECT attendance_status, check_in_time, check_out_time FROM attendance WHERE user_id = ${data.user_id}`
+        const user_attendance = await client.sql`SELECT attendance_status, check_in_time, check_out_time, attendance_date FROM attendance WHERE user_id = ${data.user_id}`
 
         if (user_attendance.rowCount == 0) {
             return NextResponse.json({ message: "User's attendance data not found" }, { status: 400 })

@@ -134,17 +134,16 @@ const ProfilePresence = () => {
               },
               body: JSON.stringify(payload),
           });
-          const data = await response.json()
+          await response.json()
             .then((res) => {
               toast.success(res.message)
               closeWebcam()
             })
             .catch((error) => toast.error(error))
-          console.log('Attendance response:', data);
       } catch (error) {
           console.error('Error posting attendance data:', error);
       }
-    };
+    }
 
     const closeWebcam = () => {
         videoRef.current.pause()

@@ -11,13 +11,23 @@ const CustomTable = <T extends object>({
     classNames,
     onEdit,
     onDelete,
-    nullValueReplace
+    nullValueReplace,
+    isActionColumn
 }: TTable<T>) => {
     const convertCurrency = (number: number) => {
         return new Intl.NumberFormat("id-ID", {
             style: "currency",
             currency: "IDR"
           }).format(number)
+    }
+
+    const formatDate = (date: string) => {
+        const selectedDate = new Date(date)
+
+        const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(selectedDate)
+
+        return formattedDate
     }
 
     const windowWidth = useWindowWidth()
@@ -58,6 +68,15 @@ const CustomTable = <T extends object>({
             }
         }
 
+        if (col.column === 'attendance_date') {
+            return {
+                title: 'Date',
+                dataIndex: col.column as string,
+                key: String(col),
+                render: (value: string) => formatDate(value)
+            }
+        }
+
         return {
             title: col.label,
             dataIndex: col.column as string,
@@ -68,20 +87,22 @@ const CustomTable = <T extends object>({
         }
     })
 
-    tableColumns.push({
-        title: 'Action',
-        key: 'action',
-        render: (_text, record) => (
-            <Space size="middle">
-                <Button type="link" onClick={() => onEdit?.(record)}>
-                    Edit
-                </Button>
-                <Button type="link" danger onClick={() => onDelete?.(record)}>
-                    Delete
-                </Button>
-            </Space>
-        ),
-    })
+    if (isActionColumn) {
+        tableColumns.push({
+            title: 'Action',
+            key: 'action',
+            render: (_text, record) => (
+                <Space size="middle">
+                    <Button type="link" onClick={() => onEdit?.(record)}>
+                        Edit
+                    </Button>
+                    <Button type="link" danger onClick={() => onDelete?.(record)}>
+                        Delete
+                    </Button>
+                </Space>
+            ),
+        })
+    }
 
     return (
         <Table<T>
