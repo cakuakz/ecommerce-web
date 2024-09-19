@@ -1,4 +1,4 @@
-import { Button, Space, Table, Tag } from "antd";
+import { Button, Empty, Image,Space, Table, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { capitalCase } from "text-case";
 
@@ -39,8 +39,7 @@ const CustomTable = <T extends object>({
                 title: 'Image',
                 dataIndex: col.column as string,
                 key: String(col),
-                // eslint-disable-next-line @next/next/no-img-element
-                render: (imageUrl: string) => <img src={imageUrl} alt="Product" width={100} height={50} />
+                render: (imageUrl: string) => <Image src={imageUrl} alt="Product" width={100} height={50} />
             }
         }
 
@@ -111,6 +110,9 @@ const CustomTable = <T extends object>({
             rowKey={(record) => (record as any).id}
             className={classNames}
             scroll={windowWidth < 1024 ? { x: 1300 } : { x: 0 }}
+            locale={{
+                emptyText: <Empty description="No Data" />,
+            }}
         />
     );
 };

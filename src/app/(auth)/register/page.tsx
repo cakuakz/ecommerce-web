@@ -106,6 +106,25 @@ const Register = () => {
                         >
                             Register
                         </Button>
+                        <Button
+                            onClick={() => {
+                                console.log(getValues("username"))
+                                console.log(getValues("fullname"))
+                                console.log(getValues("password"))
+                                console.log(getValues("img_url"))
+
+                                const formData = new FormData()
+
+                                formData.append("username", getValues("username"));
+                                formData.append("password", getValues("password"));
+                                formData.append("fullname", getValues("fullname"));
+                                formData.append("img_url", getValues("img_url")[0]);
+
+                                console.log(formData);
+                            }}
+                        >
+                            Check
+                        </Button>
                     </form>
                 </div>
             </AuthFormLayout>

@@ -1,4 +1,5 @@
-import { Flex, Input } from "antd";
+import { Button, Flex, Input } from "antd";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { useGetUserProperty } from "@/modules/state/general";
@@ -6,6 +7,7 @@ import { useGetUserProperty } from "@/modules/state/general";
 const UserProfileForm = () => {
     const username = useGetUserProperty((state) => state.username)
     const fullname = useGetUserProperty((state) => state.fullname)
+    const [isEdit, setIsEdit] = useState(false)
     const {
         control
     } = useForm({
@@ -32,6 +34,7 @@ const UserProfileForm = () => {
                         <Input
                             {...field}
                             placeholder="Username"
+                            disabled={!isEdit}
                         />
                     )}
                 />
@@ -49,10 +52,36 @@ const UserProfileForm = () => {
                         <Input
                             {...field}
                             placeholder="Fullname"
+                            disabled={!isEdit}
                         />
                     )}
                 />
             </Flex>
+            {isEdit ? (
+                <div className="flex space-x-3 justify-end mx-5">
+                    <Button
+                        danger
+                        onClick={() => setIsEdit(false)}
+                    >
+                        Cancel Edit
+                    </Button>
+                    <Button
+                        type="primary"
+                    >
+                        Save
+                    </Button>
+                </div>
+            ) : (
+                <div className="flex justify-end mx-5">
+                    <Button
+                        type="primary"
+                        onClick={() => setIsEdit(true)}
+                        className="px-8"
+                    >
+                        Edit Profile
+                    </Button>
+                </div>
+            )}
         </form>
      );
 }

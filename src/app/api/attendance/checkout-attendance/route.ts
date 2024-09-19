@@ -9,13 +9,20 @@ export const POST = async (req: Request) => {
     const currentDate = new Date()
     const time = currentDate.toLocaleTimeString()
 
+    const formattedDate = currentDate.toISOString().split('T')[0]
+
     try {
         const data: CheckAttendanceType = await req.json()
-        const existing_check_out_time = await client.sql`SELECT check_out_time FROM attendance WHERE user_id = ${data.user_id}`
+        const existingCheckOut = await client.sql`
+            SELECT check_out_time 
+            FROM attendance 
+            WHERE user_id = ${data.user_id} 
+            AND attendance_date = ${formattedDate}
+            AND check_out_time IS NOT NULL
+        `
 
-
-        if (existing_check_out_time.rowCount != 0) {
-            return NextResponse.json({ message: `Already doing check out at: ${existing_check_out_time}` })
+        if (existingCheckOut.rowCount != 0) {
+            return NextResponse.json({ message: `Already doing check out at: ${existingCheckOut.rows[0].check_out_time}` }, { status: 400 })
         }
 
         const checkOutTime = currentDate.getHours() * 60 + currentDate.getMinutes()
@@ -26,7 +33,7 @@ export const POST = async (req: Request) => {
                 await client.sql`
                     UPDATE attendance
                     SET check_out_time = ${time}, attendance_status = 'absent'
-                    WHERE user_id = ${data.user_id}
+                    WHERE user_id = ${data.user_id} AND attendance_date = ${formattedDate}
                 `
                 return NextResponse.json({ message: "Automatically absent, late check out time" }, { status: 200 })
             }
@@ -34,7 +41,7 @@ export const POST = async (req: Request) => {
             await client.sql`
                 UPDATE attendance
                 SET check_out_time = ${time}
-                WHERE user_id = ${data.user_id}
+                WHERE user_id = ${data.user_id} AND attendance_date = ${formattedDate}
             `
             return NextResponse.json({ message: "Check Out Success!" }, { status: 200 })
         }

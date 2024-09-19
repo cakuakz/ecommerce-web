@@ -58,14 +58,18 @@ export const MenuLayoutData: MenuItem[] = [
     }
 ]
 
-export const StatusOptions: TDropdown[] = [
+export const ProductTypeOptions: TDropdown[] = [
     {
-        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PET_STATUS.HEALTHY),
-        value: "healthy"
+        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PRODUCT_TYPE.FOOD),
+        value: "food"
     },
     {
-        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PET_STATUS.DISABLED),
-        value: "disabled"
+        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PRODUCT_TYPE.HEALTHCARE),
+        value: "healthcare"
+    },
+    {
+        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PRODUCT_TYPE.ACCESSORIES),
+        value: "accessories"
     }
 ]
 
@@ -80,14 +84,14 @@ export const SalesOptions: TDropdown[] = [
     }
 ]
 
-export const PetGenderOptions: TDropdown[] = [
+export const PetTypeOptions: TDropdown[] = [
     {
-        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PET_GENDER.MALE),
-        value: "male"
+        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PET_TYPE.CAT),
+        value: "cat"
     },
     {
-        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PET_GENDER.FEMALE),
-        value: "female"
+        label: capitalCase(DICTIONARY.MENU.PRODUCTS.PET_TYPE.DOG),
+        value: "dog"
     }
 ]
 

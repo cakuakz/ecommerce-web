@@ -1,8 +1,9 @@
 'use client';
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Row, Skeleton, Typography } from "antd";
+import { Button, Row, Skeleton, Spin, Typography } from "antd";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { capitalCase } from "text-case";
@@ -16,6 +17,7 @@ import { TTableColumn } from "@/modules/types";
 
 const PresencePage = () => {
     const { Title, Paragraph } = Typography
+    const router = useRouter()
     const { data: session, status } = useSession()
     const [currentStatus, setCurrentStatus] = useState('')
     const img_url = useGetUserProperty((state) => state.img_url)
@@ -34,18 +36,21 @@ const PresencePage = () => {
 
     const mutation = useMutation({
         mutationKey: ['checkoutAttendance'],
-        mutationFn: () => checkoutAttendance(session?.user.id)
+        mutationFn: () => checkoutAttendance(session?.user.id).then(() => router.refresh())
     })
 
     useEffect(() => {
         const checkAttendance = () => {
             if (data?.data && data.data.length > 0) {
-                const attendanceDate = new Date(data.data[0].attendance_date)
+                const lastIndex = data.data.length - 1
+                const attendanceDate = new Date(data.data[lastIndex].attendance_date)
                 attendanceDate.setHours(0, 0, 0, 0)
     
                 const currentDate = new Date()
                 currentDate.setHours(0, 0, 0, 0)
     
+                console.log(attendanceDate)
+                console.log(currentDate)
 
                 if (currentDate > attendanceDate) {
                     setCurrentStatus('Not Present')
@@ -61,7 +66,7 @@ const PresencePage = () => {
         img_url ? (
             <>
                 <Title>Daily Attendance</Title>
-                <Row justify="center" align="top" className="space-x-6">
+                <Row justify="center" align="bottom" className="space-y-4 lg:space-x-6">
                     <div className="flex flex-col items-center py-8 px-14 border border-slate-300 rounded-md">
                         <Image 
                             src="/face_recog_icon.svg"
@@ -75,6 +80,13 @@ const PresencePage = () => {
                         <ProfilePresence />
                     </div>
                     <div className="flex flex-col items-center py-8 px-20 border border-slate-300 rounded-md">
+                        <Image 
+                            src="/user-check-rounded.svg"
+                            alt="user check logo"
+                            width={95}
+                            height={95}
+                            className="pb-8"
+                        />
                         <Title level={2}>Today Attendance Status</Title>
                         <Title className="!text-red-600 !mt-1 !mb-10">{capitalCase(currentStatus)}</Title>
                         <Button
@@ -86,7 +98,7 @@ const PresencePage = () => {
                     </div>
                 </Row>
                 {isLoading ? (
-                    <Skeleton />
+                    <Spin spinning />
                 ) : (
                     <CustomTable 
                         data={data?.data || []}

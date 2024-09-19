@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { capitalCase } from "text-case";
 
-import { BreedOptions, labelInputClassname, PetGenderOptions, StatusOptions } from "@/components/static";
+import { labelInputClassname, PetTypeOptions, ProductTypeOptions } from "@/components/static";
 import DICTIONARY from "@/modules/constant/language";
 import { AddProductSchemaType } from "@/modules/payload/product";
 import { ProductAddResponse } from "@/modules/response/products";
@@ -28,11 +28,10 @@ const AddProductForm = () => {
         defaultValues: {
             product_name: '',
             image_url: '',
-            status: '',
             price: 0,
-            breed: '',
-            gender: '',
-            sales_status: ''
+            product_type: '',
+            sales_status: 'available',
+            pet_type: ''
         }
     })
 
@@ -54,21 +53,27 @@ const AddProductForm = () => {
         const payload: AddProductSchemaType = {
             product_name: getValues("product_name"),
             image_url: getValues("image_url"),
-            status: getValues("status"),
             price: Number(getValues("price")),
-            breed: getValues("breed"),
-            gender: getValues("gender"),
+            pet_type: getValues("pet_type"),
+            product_type: getValues("product_type"),
             sales_status: "available"
         }
+        console.log(payload)
         setIsFormLoading(true)
         mutation.mutate(payload)
+    }
+
+    const onInvalid = () => {
+        if (errors) {
+            console.log(errors)
+        }
     }
 
     return ( 
         <form 
             id="mySubmitForm"
             className="p-5"
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmit, onInvalid)}
         >
             <Col
                 className="items-center !space-y-8"
@@ -102,43 +107,43 @@ const AddProductForm = () => {
                     />
                 </Col>
                 <Col>
-                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.STATUS)}</Paragraph>
+                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PRODUCT_TYPE)}</Paragraph>
                     <Controller 
-                        name="status"
+                        name="product_type"
                         control={control}
                         render={({ field }) => (
                             <Select 
                                 {...field}
                                 allowClear
-                                placeholder={capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.STATUS)}
+                                placeholder={capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PRODUCT_TYPE)}
                                 onChange={(value: string) => {
-                                    setValue("status", value)
+                                    setValue("product_type", value)
                                     console.log(value)
                                 }}
                                 style={{ width: 200 }}
-                                status={Boolean(errors.status?.message) ? "error" : ""}
-                                options={StatusOptions}
+                                status={Boolean(errors.product_type?.message) ? "error" : ""}
+                                options={ProductTypeOptions}
                             />
                         )}
                     />
                 </Col>
                 <Col>
-                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.GENDER)}</Paragraph>
+                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PET_TYPE)}</Paragraph>
                     <Controller 
-                        name="gender"
+                        name="pet_type"
                         control={control}
                         render={({ field }) => (
                             <Select 
                                 {...field}
                                 allowClear
-                                placeholder={capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.GENDER)}
+                                placeholder={capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PET_TYPE)}
                                 onChange={(value: string) => {
-                                    setValue("gender", value)
+                                    setValue("pet_type", value)
                                     console.log(value)
                                 }}
                                 style={{ width: 200 }}
-                                status={Boolean(errors.gender?.message) ? "error" : ""}
-                                options={PetGenderOptions}
+                                status={Boolean(errors.pet_type?.message) ? "error" : ""}
+                                options={PetTypeOptions}
                             />
                         )}
                     />
@@ -156,27 +161,6 @@ const AddProductForm = () => {
                                 placeholder={capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.PRICE)}
                                 status={Boolean(errors.price?.message) ? "error" : ""}
                                 onChange={(e) => field.onChange(Number(e.target.value))}
-                            />
-                        )}
-                    />
-                </Col>
-                <Col>
-                    <Paragraph className={labelInputClassname}>{capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.BREED)}</Paragraph>
-                    <Controller 
-                        name="breed"
-                        control={control}
-                        render={({ field }) => (
-                            <Select 
-                                {...field}
-                                allowClear
-                                placeholder={capitalCase(DICTIONARY.MENU.PRODUCTS.LABEL.BREED)}
-                                onChange={(value: string) => {
-                                    setValue("breed", value)
-                                    console.log(value)
-                                }}
-                                style={{ width: 200 }}
-                                status={Boolean(errors.breed?.message) ? "error" : ""}
-                                options={BreedOptions}
                             />
                         )}
                     />

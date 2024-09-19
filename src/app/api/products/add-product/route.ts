@@ -22,16 +22,17 @@ export const POST = async (req: Request) => {
             INSERT INTO products (
                 product_name,
                 image_url,
-                status,
+                pet_type,
+                product_type,
                 price,
-                breed,
-                
+                sales_status
             ) VALUES (
                 ${data.product_name},
                 ${data.image_url},
-                ${data.status},
+                ${data.pet_type},
+                ${data.product_type},
                 ${data.price},
-                ${data.breed}
+                ${data.sales_status}
             );
         `
 

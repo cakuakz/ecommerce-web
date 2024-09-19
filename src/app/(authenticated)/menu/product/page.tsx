@@ -45,24 +45,20 @@ const ProductPage = () => {
             column: 'image_url'
         },
         {
-            label: 'Pet Name',
+            label: 'Product Name',
             column: 'product_name'
         },
         {
-            label: 'Status',
-            column: 'status'
+            label: 'Pet Type',
+            column: 'pet_type'
         },
         {
             label: 'Price',
             column: 'price'
         },
         {
-            label: 'Breed',
-            column: 'breed'
-        },
-        {
-            label: 'Gender',
-            column: 'gender'
+            label: 'Product Type',
+            column: 'product_type'
         },
         {
             label: 'Sales Status',
@@ -72,7 +68,7 @@ const ProductPage = () => {
 
     const handleModalOpen = () => {
         setModalOpen(true);
-        const newPath = `${pathname}/add-product`
+        const newPath = `${pathname}/add`
         window.history.replaceState(null, '', newPath)
     }
 

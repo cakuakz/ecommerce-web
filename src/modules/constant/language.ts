@@ -35,25 +35,25 @@ const DICTIONARY = {
             TITLE: "PRODUCTS PAGE",
             SUBTITLE: "PETS MANAGEMENT PAGE",
             LABEL: {
-                PRODUCT_NAME: "PET NAME",
+                PRODUCT_NAME: "PRODUCT NAME",
                 IMAGE_URL: "IMAGE URL",
-                STATUS: "STATUS",
                 PRICE: "PRICE",
-                BREED: "BREED",
+                PRODUCT_TYPE: "PRODUCT TYPE",
                 SALES_STATUS: "SALES STATUS",
-                GENDER: "GENDER"
+                PET_TYPE: "PET TYPE"
             },
-            PET_STATUS: {
-                HEALTHY: "HEALTHY",
-                DISABLED: "DISABLED"
+            PRODUCT_TYPE: {
+                FOOD: "PET FOOD",
+                HEALTHCARE: "PET HEALTHCARE",
+                ACCESSORIES: "PET ACCESSORIES"
             },
             PET_SALES: {
                 AVAILABLE: "AVAILABLE",
                 SOLD: "SOLD"
             },
-            PET_GENDER: {
-                MALE: "MALE",
-                FEMALE: "FEMALE"
+            PET_TYPE: {
+                CAT: "CAT",
+                DOG: "DOG"
             }
         },
         USER_MANAGEMENT: {

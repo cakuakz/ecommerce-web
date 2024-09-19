@@ -4,11 +4,10 @@ export type ProductResponse = {
     id: string
     product_name: string
     image_url: string
-    status: string
+    product_type: string
     price: number
     sales_status: string
-    gender: string
-    breed: string
+    pet_type: string
     created_at: string
     updated_at: string
 }

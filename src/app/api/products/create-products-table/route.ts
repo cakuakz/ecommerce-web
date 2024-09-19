@@ -6,21 +6,8 @@ export const GET = async (request: Request) => {
 
     try {
         const result = await client.sql`
-            CREATE TYPE status AS ENUM ('healthy', 'disabled');
-            CREATE TYPE sales_status AS ENUM ('available', 'sold');
-            CREATE TYPE gender AS ENUM ('male', 'female');
-            CREATE TYPE breed AS ENUM (
-                'british shorthair',
-                'american shorthair',
-                'indonesian shorthair',
-                'maine coon',
-                'scottish fold',
-                'munchkin',
-                'ragdoll',
-                'oren',
-                'egyptian mau',
-                'persian cat'
-            );
+            CREATE TYPE product_type AS ENUM ('food', 'healthcare', 'accessories');
+            CREATE TYPE pet_type AS ENUM ('cat', 'dog');
 
             CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -28,11 +15,10 @@ export const GET = async (request: Request) => {
                 id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                 product_name VARCHAR(50) NOT NULL,
                 image_url TEXT NOT NULL,
-                status status NOT NULL,
                 sales_status sales_status NOT NULL,
-                gender gender NOT NULL,
+                product_type product_type NOT NULL,
+                pet_type pet_type NOT NULL,
                 price NUMERIC(10, 2) NOT NULL,
-                breed breed NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
